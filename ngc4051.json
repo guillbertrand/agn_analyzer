@@ -1,7 +1,7 @@
 {
   "object_name": "NGC4051",
   "spectrum_path": "C:\\Users\\g-ber\\Documents\\ASTRO\\starex\\ccdciel\\20250620\\_ngc4051_20250620_952.fits",
-  "spectrum_abs_path": "C:\\Users\\g-ber\\Documents\\ASTRO\\starex\\ccdciel\\20250620\\_ngc4051_20250620_952-abs.fits",
+  "spectrum_abs_path": "C:\\Users\\g-ber\\Documents\\ASTRO\\starex\\ccdciel\\20250620\\_ngc4051_20250620_952-abs-AB.fits",
   "initial_guess": [
     { "name":"H$_beta$", "mean": 4873, "rest":4861.34, "stddev": 5 },
     { "name":"[OIII] 4959 $_AA$", "mean": 4970, "rest":4959, "stddev":5 },

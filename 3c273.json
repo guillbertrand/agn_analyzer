@@ -1,7 +1,7 @@
 {
   "object_name": "3C 273",
   "spectrum_path": "C:\\Users\\g-ber\\Documents\\ASTRO\\starex\\ccdciel\\20250618\\_3c273_20250618_89.fits",
-  "spectrum_abs_path": "C:\\Users\\g-ber\\Documents\\ASTRO\\starex\\ccdciel\\20250618\\_3c273_20250618_89-abs.fits",
+  "spectrum_abs_path": "C:\\Users\\g-ber\\Documents\\ASTRO\\starex\\ccdciel\\20250618\\_3c273_20250618_89-abs-AB.fits",
   "initial_guess": [
     { "name":"H$_gamma$", "mean": 5042, "rest":4340.48, "stddev": 20 },
     { "name":"H$_beta$", "mean": 5634, "rest":4861.34, "stddev": 25 },

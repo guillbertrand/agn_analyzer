@@ -37,6 +37,7 @@ class AGNAnalyzer:
         self.monte_carlo_runs = config.get("monte_carlo_runs", 100)
         self.output_file = config.get("output_file", f"{self.object_name}.png")
         self.z_plot_margin = config.get("z_plot_margin", [200, 400])
+        self.broad_hbeta_bounds = config.get("broad_hbeta_bounds", (5, None))
 
         self.spectrum = Spectrum1D.read(self.spectrum_path, format='wcs1d-fits')
         self.spectrum_abs = Spectrum1D.read(self.spectrum_abs_path, format='wcs1d-fits')
@@ -164,15 +165,19 @@ class AGNAnalyzer:
         O3_2 = 5007
 
         # Create Gaussian1D models for each of the H-beta and [OIII] lines.
-        hbeta_broad = models.Gaussian1D( mean=Hbeta, stddev=10)
+        initial_stddev = 10 if self.broad_hbeta_bounds and self.broad_hbeta_bounds[0] <= 10 else self.broad_hbeta_bounds[0]
+        hbeta_broad = models.Gaussian1D( mean=Hbeta, stddev=initial_stddev)
         hbeta_broad.mean.bounds = (4800, 4900)
-        hbeta_broad.amplitude.bounds = (0.2, None)
+        hbeta_broad.amplitude.bounds = (0.1, None)
+        hbeta_broad.stddev.bounds = self.broad_hbeta_bounds
         hbeta_narrow = models.Gaussian1D(mean=Hbeta, stddev=5)
         hbeta_narrow.mean.bounds = (4851, 4871) 
         hbeta_narrow.amplitude.bounds = (0, None)
         
         o3_1 = models.Gaussian1D(amplitude=0.25, mean=O3_1, stddev=5)
         o3_2 = models.Gaussian1D(amplitude=0.25, mean=O3_2, stddev=5)
+        o3_1.stddev.bounds = (None, 5)
+        o3_2.stddev.bounds = (None, 5)
 
         # Create a polynomial model to fit the continuum.
         mean_flux = flux.mean()
@@ -436,19 +441,29 @@ class AGNAnalyzer:
         ax1.set_ylim(ymin1, ymax1)
 
         ymin2, ymax2 = ax2.get_ylim()
-        ax2.set_ylim(ymin2, ymax2 * 1.4)
+        ax2.set_ylim(-0.2, ymax2 * 1.4)
 
         ax1.legend(ncol=2,fontsize='small', loc='upper left', bbox_to_anchor=(0, 1))
         ax2.legend(ncol=2, fontsize='small', loc='upper left', bbox_to_anchor=(0, 1))
 
+        for ax in [ax0, ax1, ax2]:
+            ax.minorticks_on()
+            ax.tick_params(axis='both', which='major',
+                        direction='in', top=True, right=True,
+                        length=6, width=1)
+            ax.tick_params(axis='both', which='minor',
+                        direction='in', top=True, right=True,
+                        length=3, width=0.5)
+
+
         plt.tight_layout()
-        plt.savefig(self.output_file)
+        plt.savefig(self.output_file, bbox_inches='tight', pad_inches=0.15)
         plt.show()
 
         fwhm_kms = self.gaussian_fwhm_in_velocity(fit, fitter)
         fwhm_inst = self.fwhm_instr_from_R(centers[0])
         fwhm_intrinsic = np.sqrt(fwhm_kms**2 - fwhm_inst**2)
-
+      
         log_M1, M1, d1 = self.calculate_mbh(flux_5100, fwhm_intrinsic, mean_z, method='vestergaard')
         log_M2, M2, d2 = self.calculate_mbh(flux_5100, fwhm_intrinsic, mean_z, method='feng')
 
@@ -461,7 +476,7 @@ class AGNAnalyzer:
         err_M2 = self.error_on_mass(log_M2, err_logM_f)
         print(f"Object: {self.object_name}")
         print(f"z = {mean_z:.6f} ± {sigma_z:.6f}")
-        print(f"FWHM = {fwhm_kms:.1f} ± {0:.1f} km/s, corrected: {fwhm_intrinsic:.1f}")
+        print(f"FWHM = {fwhm_kms:.3f} ± {fwhm_std:.3f} km/s, corrected: {fwhm_intrinsic:.1f} ± {fwhm_std:.3f}")
         print(f"Flux: {self.format_with_error(flux, flux_err)}")
         print('--- Method 1 : Vestergaard ---')
         print(f"log(M_BH) = {self.format_with_error(log_M1, err_logM_v)}")

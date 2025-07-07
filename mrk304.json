@@ -1,0 +1,20 @@
+{
+  "object_name": "Mrk304",
+  "spectrum_path": "C:\\Users\\g-ber\\Documents\\ASTRO\\starex\\ccdciel\\20250704\\_mrk304_20250704_985.fits",
+  "spectrum_abs_path": "C:\\Users\\g-ber\\Documents\\ASTRO\\starex\\ccdciel\\20250704\\_mrk304_20250704_985-abs-AB.fits",
+  "initial_guess": [
+    { "name":"H$_beta$", "mean": 5171, "rest":4861.34, "stddev": 20 },
+    { "name":"[OIII] 5007 $_AA$", "mean": 5337, "rest":5007, "stddev": 2 },
+    { "name" :"H$_alpha$", "mean": 6986, "rest":6562.81, "stddev": 50 }
+  ],
+  "monte_carlo_runs": 100,
+  "line_model": "gaussian",
+  "R": 750,
+  "mag_V": 14.56,
+  "mag_err": 0.08,
+  "EBV": 0.108,
+  "z_plot_margin": [300, 400],
+  "output_file": "Mrk304.png",
+  "subtitle_1": "2025/07/05 - La Montagne - G.Bertrand",
+  "subtitle_2": "Newton 150 f/5 - StarEx LR (300 l/mm, 80x80, 26um slit) - IMX585"
+}

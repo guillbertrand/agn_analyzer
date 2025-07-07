@@ -1,0 +1,20 @@
+{
+  "object_name": "NGC4051",
+  "spectrum_path": "C:\\Users\\g-ber\\Documents\\ASTRO\\starex\\ccdciel\\20250620\\_ngc4051_20250620_952.fits",
+  "spectrum_abs_path": "C:\\Users\\g-ber\\Documents\\ASTRO\\starex\\ccdciel\\20250620\\_ngc4051_20250620_952-abs.fits",
+  "initial_guess": [
+    { "name":"H$_beta$", "mean": 4873, "rest":4861.34, "stddev": 5 },
+    { "name":"[OIII] 4959 $_AA$", "mean": 4970, "rest":4959, "stddev":5 },
+    { "name":"[OIII] 5007 $_AA$", "mean": 5018, "rest":5007, "stddev": 5 }
+  ],
+  "monte_carlo_runs": 100,
+  "fit_o_4959": true,
+  "R": 750,
+  "mag_V": 12.9,
+  "mag_err": 0.0324,
+  "EBV": 0.02,
+  "z_plot_margin": [300, 100],
+  "output_file": "ngc4051.png",
+  "subtitle_1": "2025/06/20 - La Montagne - G.Bertrand",
+  "subtitle_2": "Newton 150 f/5 - StarEx LR (300 l/mm, 80x80, 26um slit) - IMX585"
+}

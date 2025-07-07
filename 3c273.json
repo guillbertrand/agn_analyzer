@@ -1,0 +1,19 @@
+{
+  "object_name": "3C 273",
+  "spectrum_path": "C:\\Users\\g-ber\\Documents\\ASTRO\\starex\\ccdciel\\20250618\\_3c273_20250618_89.fits",
+  "spectrum_abs_path": "C:\\Users\\g-ber\\Documents\\ASTRO\\starex\\ccdciel\\20250618\\_3c273_20250618_89-abs.fits",
+  "initial_guess": [
+    { "name":"H$_gamma$", "mean": 5042, "rest":4340.48, "stddev": 20 },
+    { "name":"H$_beta$", "mean": 5634, "rest":4861.34, "stddev": 25 },
+    { "name":"[OIII] 5007 $_AA$", "mean": 5798,"rest":5007, "stddev": 10 }
+  ],
+  "monte_carlo_runs": 100,
+  "line_model": "lorentzian",
+  "R": 750,
+  "mag_V": 13.36,
+  "mag_err": 0.07,
+  "EBV": 0.022,
+  "output_file": "3c273.png",
+  "subtitle_1": "2025/06/18 - La Montagne - G.Bertrand",
+  "subtitle_2": "Newton 150 f/5 - StarEx LR (300 l/mm, 80x80, 26um slit) - IMX585"
+}

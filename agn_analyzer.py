@@ -331,7 +331,8 @@ class AGNAnalyzer:
             sigma_logL = np.sqrt(sigma_logL**2 + sigma_logL_z**2)
 
         sigma_logM = np.sqrt((b * sigma_logL)**2 + (c * sigma_logFWHM)**2 + intrinsic_scatter**2)
-        return sigma_logM
+        sigma_logM2 = np.sqrt((b * sigma_logL)**2 + (c * sigma_logFWHM)**2)
+        return sigma_logM, sigma_logM2
 
     def format_with_error(self, value, error, significant_digits=8):
         exponent = int(np.floor(np.log10(abs(value)))) if value != 0 else 0
@@ -467,21 +468,24 @@ class AGNAnalyzer:
         log_M1, M1, d1 = self.calculate_mbh(flux_5100, fwhm_intrinsic, mean_z, method='vestergaard')
         log_M2, M2, d2 = self.calculate_mbh(flux_5100, fwhm_intrinsic, mean_z, method='feng')
 
-        err_logM_v = self.propagate_mass_error(fwhm_mean, fwhm_std, L5100_mean, L5100_std,
+        err_logM_v, err_logM_v2 = self.propagate_mass_error(fwhm_mean, fwhm_std, L5100_mean, L5100_std,
                                             method='vestergaard', sigma_z=sigma_z, z=mean_z)
-        err_logM_f = self.propagate_mass_error(fwhm_mean, fwhm_std, L5100_mean, L5100_std,
+        err_logM_f, err_logM_f2 = self.propagate_mass_error(fwhm_mean, fwhm_std, L5100_mean, L5100_std,
                                             method='feng', sigma_z=sigma_z, z=mean_z)
 
         err_M1 = self.error_on_mass(log_M1, err_logM_v)
         err_M2 = self.error_on_mass(log_M2, err_logM_f)
+        err_M1_2 = self.error_on_mass(log_M1, err_logM_v2)
+        err_M2_2 = self.error_on_mass(log_M2, err_logM_f2)
         print(f"Object: {self.object_name}")
         print(f"z = {mean_z:.6f} ± {sigma_z:.6f}")
         print(f"FWHM = {fwhm_kms:.3f} ± {fwhm_std:.3f} km/s, corrected: {fwhm_intrinsic:.1f} ± {fwhm_std:.3f}")
         print(f"Flux: {self.format_with_error(flux, flux_err)}")
         print('--- Method 1 : Vestergaard ---')
-        print(f"log(M_BH) = {self.format_with_error(log_M1, err_logM_v)}")
-        print(f"M_BH      = {self.format_with_error(M1, err_M1)}\n")
+        print(f"log(M_BH) = {self.format_with_error(log_M1, err_logM_v)} - {self.format_with_error(log_M1, err_logM_v2)}")
+        print(f"M_BH      = {self.format_with_error(M1, err_M1)} - {self.format_with_error(M1, err_M1_2)}\n")
+        print()
         print('--- Method 2 : Feng ---')
-        print(f"log(M_BH) = {self.format_with_error(log_M2, err_logM_f)}")
-        print(f"M_BH      = {self.format_with_error(M2, err_M2)}\n")
+        print(f"log(M_BH) = {self.format_with_error(log_M2, err_logM_f)} - {self.format_with_error(log_M2, err_logM_f2)}")
+        print(f"M_BH      = {self.format_with_error(M2, err_M2)} - {self.format_with_error(M2, err_M2_2)}\n")
 
